@@ -1,32 +1,49 @@
-#Integreate A,B,C game into one as a console
-import sys
-import os
-import tkinter as tk
-from tkinter import ttk
-import A_tictactoe as A
-import B_hangmantile as B
-import C_pianotiles as C
+# Integreate A,B,C game into one as a console
+import subprocess
+from tkinter import *
 
-#setting up the frame for dashboard
-root=tk.Tk()
+# setting up the frame for dashboard
+root = Tk()
 root.title("Arcade Game Console")
+#bg = PhotoImage(file = "download.jpg")
 root.geometry('500x500')
-frm=ttk.Frame(root,padding=20)
-frm.grid()
-#ttk.Label(frm, text="Hello World!").grid(column=0,row=0)
-#ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
-def open_A():
-    os.system('A_tictactoe.py')
-def open_B():
-    os.system('B_hangmantile.py')
-def open_C():
-    os.system('C_pianotiles.py')
-A_but=ttk.Button(frm, text="TIC TAC TOE", command=open_A)
-B_but=ttk.Button(frm, text="HANGMAN TILES", command=open_B)
-C_but=ttk.Button(frm, text="PIANO TILES", command=open_C)
-quit=ttk.Button(frm, text="QUIT", command=root.destroy)
-A_but.grid(column=1,row=0)
-B_but.grid(column=4,row=0)
-C_but.grid(column=7,row=0)
-quit.grid(column=9,row=4)
+#frame1 = Frame(root, padding=20)
+#frame1.grid()
+#root.iconphoto(False, PhotoImage(file="E:\Studies\UOP\E20\Semester 2\GP 106 Computing\Project\Arcade-Game-Console\a.png"))
+# ttk.Label(root, text="Hello World!").grid(column=0,row=0)
+# ttk.Button(root, text="Quit", command=root.destroy).grid(column=1, row=0)
+
+def run_A():
+    subprocess.run(["python", "A_tictactoe.py"])
+def run_B():
+    subprocess.run(["python", "B_hangmantile.py"])
+def run_C():
+    subprocess.run(["python", "C_pianotiles.py"])
+
+#butttons for run the game
+bt1 = Button(
+    root,
+    text="TIC TAC TOE",
+    command=run_A
+)
+bt2 = Button(
+    root,
+    text="HANGMAN TILES",
+    command=run_B
+)
+bt3 = Button(
+    root,
+    text="PIANO TILES",
+    command=run_C
+)
+quit = Button(
+    root,
+    text="QUIT",
+    command=root.destroy
+)
+bt1.grid(column=1, row=0)
+bt2.grid(column=4, row=0)
+bt3.grid(column=7, row=0)
+quit.grid(column=9, row=4)
+
 root.mainloop()
