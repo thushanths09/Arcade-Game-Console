@@ -32,28 +32,33 @@ def run_C():
 bt1 = Button(
     root,
     text="TIC TAC TOE",
+    bg="#ff0000",
     command=run_A
 )
 bt2 = Button(
     root,
     text="HANGMAN TILES",
+    bg="#00ff00",
     command=run_B
 )
 bt3 = Button(
     root,
     text="PIANO TILES",
+    bg="#0000ff",
     command=run_C
 )
 bt4 = Button(
     root,
     text="QUIT",
+    fg="#ffffff",
+    bg="#000000",
     command=root.destroy
 )
 
 # placing the buttons in the frame
-bt1.place(x =  0,  y = 0)
-bt2.place(x = 100, y = 0)
-bt3.place(x = 225, y = 0)
-bt4.place(x = 300, y = 100)
+bt1.place(x=0,  y=0)
+bt2.place(x=100, y=0)
+bt3.place(x=225, y=0)
+bt4.place(x=300, y=100)
 
 root.mainloop()
