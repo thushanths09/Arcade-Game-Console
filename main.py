@@ -51,9 +51,9 @@ bt4 = Button(
 )
 
 # placing the buttons in the frame
-bt1.place(x = 1, y = 0)
-bt2.place(x = 4, y = 0)
-bt3.place(x = 7, y = 0)
-bt4.place(x = 9, y = 4)
+bt1.place(x =  0,  y = 0)
+bt2.place(x = 100, y = 0)
+bt3.place(x = 225, y = 0)
+bt4.place(x = 300, y = 100)
 
 root.mainloop()
