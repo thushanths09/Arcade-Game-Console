@@ -1,5 +1,6 @@
 # Integreate A,B,C game into one as a console
 import subprocess
+import pyfirmata as pf
 from tkinter import *
 
 # setting up the frame for dashboard
