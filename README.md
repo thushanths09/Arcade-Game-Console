@@ -4,3 +4,4 @@ Required Python Packages
   2. Pygame
   3. Pyfirmata
   4. Subprocess
+  5. Pyserial
