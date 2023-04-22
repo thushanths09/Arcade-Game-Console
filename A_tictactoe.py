@@ -57,7 +57,7 @@ while True:
     for led in led_lights:
         led.write(0)
 
-    # turn on the position led
+    # turn on the position led if it is not selected
     pos_led = led_layout[pos[0][pos[1]]]
     if pos_led not in clicked_leds:
         board.digital[pos_led].write(1)
