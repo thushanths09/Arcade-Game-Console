@@ -1,10 +1,31 @@
+#GP106 PROJECT
+#Arcade Game Console
+#Game 01: Tic Tac Toe
+#E/20/401, E/20/402, E/20/403, E/20/404
 from pyfirmata import *
 from pyfirmata import util
 import time
 
 
 def win():
-    return 5
+    if (l1 and l5 and l6) in clicked_leds:
+        print("WIN")
+    elif (l3 and l5 and l7) in clicked_leds:
+        print("WIN")
+    elif (l1 and l2 and l3) in clicked_leds:
+        print("WIN")
+    elif (l4 and l5 and l6) in clicked_leds:
+        print("WIN")
+    elif (l7 and l8 and l9) in clicked_leds:
+        print("WIN")
+    elif (l1 and l4 and l7) in clicked_leds:
+        print("WIN")
+    elif (l2 and l5 and l9) in clicked_leds:
+        print("WIN")
+    elif (l3 and l6 and l9) in clicked_leds:
+        print("WIN")
+
+
 
 
 def draw():
@@ -94,3 +115,5 @@ while True:
         clicked_leds.add(clicked_led)
     else:
         pass
+
+
