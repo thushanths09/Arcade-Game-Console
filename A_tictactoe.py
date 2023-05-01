@@ -6,10 +6,6 @@ from pyfirmata import *
 from pyfirmata import util
 import time
 
-def infinity():
-    while True:
-        yield
-
 def win():
     if (l1 and l5 and l6) in clicked_leds:
         print("WIN")
@@ -55,12 +51,12 @@ click = board.get_pin('d:13:i')
 # setting up the led lights for playing
 l1 = board.get_pin('d:3:o')
 l2 = board.get_pin('d:4:o')
-l3 = board.get_pin('d:5:o')
-l4 = board.get_pin('d:6:o')
-l5 = board.get_pin('d:7:o')
-l6 = board.get_pin('d:8:o')
-l7 = board.get_pin('d:9:o')
-l8 = board.get_pin('d:10:o')
+l3 = board.get_pin('d:9:o')
+l4 = board.get_pin('d:5:o')
+l5 = board.get_pin('d:6:o')
+l6 = board.get_pin('d:10:o')
+l7 = board.get_pin('d:7:o')
+l8 = board.get_pin('d:8:o')
 l9 = board.get_pin('d:11:o')
 
 # LED Layout
@@ -83,11 +79,12 @@ while True:
     # initially turning off the lights
     for led in led_lights:
         led.write(0)
+
     # turn on the position led if it is not selected
     pos_led = led_layout[pos[0]][pos[1]]
-    pos_led.write(1)
     if pos_led not in clicked_leds:
         pos_led.write(1)
+        time.sleep(0.2)
 
     # reading the button states
     move_state = move.read()
@@ -96,14 +93,14 @@ while True:
 
 
     # controls
-    for i in infinity():
-        if move_state == 1:
-            pos[1] += 1
-            if pos[1] == 2:
-                pos[1] = 0
-                pos[0]  += 1
-                if pos[0] == 0:
-                    pos[0] = 0
+    if move_state == 0:
+        pos[1] += 1
+        if pos[1] > 2:
+            pos[1] = 0
+            pos[0] += 1
+            if pos[0] > 2:
+                pos[0] = 0
+
     # turn on the selected led
     if click_state == 1:
         clicked_led = led_layout[pos[0][pos[1]]]
