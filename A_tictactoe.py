@@ -58,7 +58,7 @@ def win():
             print("PLAYER 2 WIN")
             return True
 
-#number of turns and player
+#number of turns and current player
 present_player = player1
 turn = 1
 
@@ -78,7 +78,7 @@ while True:
 
     # turn on the position led if it is not selected and switching players led
     pos_led = led_layout[pos[0]][pos[1]]
-    if pos_led not in (clicked_led_1 and clicked_led_2):
+    if pos_led not in (clicked_led_1 or clicked_led_2):
         if present_player == player1:
             pos_led.write(1)
             time.sleep(0.2)
@@ -92,7 +92,7 @@ while True:
         else:
             pass
 
-    # controls
+    #moving controls
     if move_state == 1:
         pos[1] += 1
         if pos[1] > 2:
@@ -111,7 +111,7 @@ while True:
             clicked_led.write(1)
             time.sleep(0.5)
             present_player = player2
-        else:
+        elif present_player == player2:
             clicked_led_2.append(clicked_led)
             clicked_led.write(1)
             time.sleep(0.2)
@@ -122,15 +122,18 @@ while True:
             clicked_led.write(0)
             time.sleep(0.2)
             present_player = player1
+        else:
+            pass
         turn += 1
         time.sleep(0.1)
+
     else:
         pass
 
     #check winner
     if win():
         buzzer.write(1)
-        time.sleep(1)
+        time.sleep(2)
         buzzer.write(0)
         if present_player == player1:
             player1_score += 1
@@ -144,5 +147,10 @@ while True:
         break
     time.sleep(0.1)
 
-if quit.read() == 0:
+#quitting the game
+if quit.read() == 1:
+    print("SCORE")
+    print("-------")
+    print("Player 1 : ",player1_score)
+    print("Player 2 : ",player2_score)
     board.exit()
