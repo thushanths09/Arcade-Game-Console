@@ -46,10 +46,6 @@ it.start()
 move.enable_reporting()
 click.enable_reporting()
 
-#number of turns and player
-current_playing = player1
-turn = 1
-
 def switch_players():
     if click.read() == 1:
         print(5)
@@ -77,10 +73,20 @@ def win():
 #function to blink led
 def blink_led(x):
     while True:
-        x.write(0)
-        time.sleep(0.2)
         x.write(1)
-        time.sleep(0.2)
+        time.sleep(0.1)
+        x.write(0)
+        time.sleep(0.1)
+        if move_state == 1:
+            break
+
+#number of turns and player
+current_playing = player1
+turn = 1
+
+#initial score
+player1_score = 0
+player2_score = 0
 
 #Main Loop for Game
 while True:
@@ -92,11 +98,16 @@ while True:
     for led in led_lights:
         led.write(0)
 
-    # turn on the position led if it is not selected
+    # turn on the position led if it is not selected and switching players led
     pos_led = led_layout[pos[0]][pos[1]]
     if pos_led not in clicked_leds:
-        pos_led.write(1)
-        time.sleep(0.1)
+        #if current_playing == player1:
+            pos_led.write(1)
+        #     time.sleep(0.1)
+        # elif current_playing == player2:
+        #     blink_led(pos_led)
+        # else:
+        #     pass
 
     # controls
     if move_state == 1:
@@ -124,6 +135,10 @@ while True:
         buzzer.write(1)
         time.sleep(1)
         buzzer.write(0)
+        if current_playing == player1:
+            player1_score += 1
+        else:
+            player2_score += 1
         break
 
     #draw(no winner)
@@ -131,3 +146,10 @@ while True:
         print("DRAW")
         break
     time.sleep(0.1)
+
+    #switching players
+    if current_playing == player1:
+        current_playing = player2
+    else:
+        current_playing = player1
+
