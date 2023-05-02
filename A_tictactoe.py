@@ -57,26 +57,7 @@ def win():
         elif i == clicked_led_2:
             print("PLAYER 2 WIN")
             return True
-    """
-    if (l1 and l2 and l3) in clicked_leds:
-        return True
-    elif (l4 and l5 and l6) in clicked_leds:
-        return True
-    elif (l7 and l8 and l9) in clicked_leds:
-        return True
-    elif (l1 and l4 and l7) in clicked_leds:
-        return True
-    elif (l2 and l5 and l8) in clicked_leds:
-        return True
-    elif (l1 and l5 and l9) in clicked_leds:
-        return True
-    elif (l3 and l5 and l7) in clicked_leds:
-        return True
-    elif (l3 and l6 and l9) in clicked_leds:
-        return True
-    else:
-        return False
-    """
+
 #number of turns and player
 present_player = player1
 turn = 1
