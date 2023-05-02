@@ -74,6 +74,8 @@ clicked_leds = []
 # creating iterator to read the button
 it = util.Iterator(board)
 it.start()
+move.enable_reporting()
+click.enable_reporting()
 
 while True:
     # initially turning off the lights
@@ -84,7 +86,7 @@ while True:
     pos_led = led_layout[pos[0]][pos[1]]
     if pos_led not in clicked_leds:
         pos_led.write(1)
-        time.sleep(0.2)
+        time.sleep(0.1)
 
     # reading the button states
     move_state = move.read()
@@ -93,7 +95,7 @@ while True:
 
 
     # controls
-    if move_state == 0:
+    if move_state == 1:
         pos[1] += 1
         if pos[1] > 2:
             pos[1] = 0
