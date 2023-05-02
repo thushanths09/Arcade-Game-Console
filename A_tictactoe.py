@@ -13,6 +13,7 @@ board = Arduino('COM9')
 move = board.get_pin('d:11:i')
 click = board.get_pin('d:12:i')
 buzzer = board.get_pin('d:13:o')
+quit = board.get_pin('a:1:i')
 
 # setting up the led lights for playing
 l1 = board.get_pin('d:2:o')
@@ -35,7 +36,8 @@ led_layout = [
 
 # setting up position of led and creating the set of selcted leds
 pos = [0, 0]
-clicked_leds = []
+clicked_led_1 = []
+clicked_led_2 = []
 player1 = 'X'
 player2 = 'O'
 
@@ -45,8 +47,17 @@ it.start()
 move.enable_reporting()
 click.enable_reporting()
 
-#function fow winning
+#function for winning
 def win():
+    win_matches=[[l1,l2,l3], [l4,l5,l6], [l7,l8,l9], [l1,l4,l7], [l2,l5,l8], [l3,l6,l9], [l1,l5,l9], [l3,l5,l7]]
+    for i in win_matches:
+        if i == clicked_led_1:
+            print("PLAYER 1 WIN")
+            return True
+        elif i == clicked_led_2:
+            print("PLAYER 2 WIN")
+            return True
+    """
     if (l1 and l2 and l3) in clicked_leds:
         return True
     elif (l4 and l5 and l6) in clicked_leds:
@@ -65,9 +76,9 @@ def win():
         return True
     else:
         return False
-
+    """
 #number of turns and player
-current_playing = player1
+present_player = player1
 turn = 1
 
 #initial score
@@ -86,11 +97,11 @@ while True:
 
     # turn on the position led if it is not selected and switching players led
     pos_led = led_layout[pos[0]][pos[1]]
-    if pos_led not in clicked_leds:
-        if current_playing is player1:
+    if pos_led not in (clicked_led_1 and clicked_led_2):
+        if present_player == player1:
             pos_led.write(1)
             time.sleep(0.2)
-        elif current_playing == player2:
+        elif present_player == player2:
             pos_led.write(1)
             time.sleep(0.1)
             pos_led.write(0)
@@ -113,20 +124,34 @@ while True:
     # turn on the selected led
     if click_state == 1:
         clicked_led = led_layout[pos[0]][pos[1]]
-        clicked_led.write(1)
-        clicked_leds.append(clicked_led)
-        turn +=1
+        #switching players
+        if present_player == player1:
+            clicked_led_1.append(clicked_led)
+            clicked_led.write(1)
+            time.sleep(0.5)
+            present_player = player2
+        else:
+            clicked_led_2.append(clicked_led)
+            clicked_led.write(1)
+            time.sleep(0.2)
+            clicked_led.write(0)
+            time.sleep(0.2)
+            clicked_led.write(1)
+            time.sleep(0.2)
+            clicked_led.write(0)
+            time.sleep(0.2)
+            present_player = player1
+        turn += 1
         time.sleep(0.1)
     else:
         pass
 
     #check winner
     if win():
-        print("Player Win")
         buzzer.write(1)
         time.sleep(1)
         buzzer.write(0)
-        if current_playing == player1:
+        if present_player == player1:
             player1_score += 1
         else:
             player2_score += 1
@@ -138,9 +163,5 @@ while True:
         break
     time.sleep(0.1)
 
-    #switching players
-    if current_playing == player1:
-        current_playing = player2
-    else:
-        current_playing = player1
-
+if quit.read() == 0:
+    board.exit()
