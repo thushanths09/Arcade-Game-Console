@@ -36,6 +36,7 @@ led_layout = [
 pos = [0, 0]
 clicked_leds = []
 players = ['X', 'O']
+
 # creating iterator to read the button
 it = util.Iterator(board)
 it.start()
@@ -45,6 +46,7 @@ click.enable_reporting()
 def switch_players():
     if click.read() == 1:
         print(5)
+
 def win():
     if (l1 and l5 and l6) in clicked_leds:
         print("WIN")
@@ -71,22 +73,16 @@ def blink_led(x):
         x.write(1)
         time.sleep(0.5)
 
-
 def draw():
     return 7
-
 
 def loose():
     return 8
 
-
 #Main Loop for Game
 while True:
     # reading the button states
-
     move_state = move.read()
-    # reset_state = reset.read()
-
     click_state = click.read()
 
     # initially turning off the lights
@@ -97,10 +93,9 @@ while True:
     pos_led = led_layout[pos[0]][pos[1]]
     if pos_led not in clicked_leds:
         pos_led.write(1)
-        time.sleep(0.2)
+        time.sleep(0.1)
 
     # controls
-
     if move_state == 1:
         pos[1] += 1
         if pos[1] > 2:
@@ -108,14 +103,14 @@ while True:
             pos[0] += 1
             if pos[0] > 2:
                 pos[0] = 0
-        time.sleep(0.2)
+        time.sleep(0.1)
 
     # turn on the selected led
     if click_state == 1:
         clicked_led = led_layout[pos[0]][pos[1]]
-        clicked_led.write(1)
-        clicked_leds.add(clicked_led)
-        time.sleep(0.2)
+        clicked_led.write(0)
+        clicked_leds.append(clicked_led)
+        time.sleep(0.1)
     else:
         pass
     time.sleep(0.1)
