@@ -6,7 +6,6 @@ from pyfirmata import *
 from pyfirmata import util
 import time
 
-
 # creating the board
 board = Arduino('COM9')
 
@@ -46,10 +45,7 @@ it.start()
 move.enable_reporting()
 click.enable_reporting()
 
-def switch_players():
-    if click.read() == 1:
-        print(5)
-
+#function fow winning
 def win():
     if (l1 and l2 and l3) in clicked_leds:
         return True
@@ -69,16 +65,6 @@ def win():
         return True
     else:
         return False
-
-#function to blink led
-def blink_led(x):
-    while True:
-        x.write(1)
-        time.sleep(0.1)
-        x.write(0)
-        time.sleep(0.1)
-        if move_state == 1:
-            break
 
 #number of turns and player
 current_playing = player1
@@ -101,7 +87,7 @@ while True:
     # turn on the position led if it is not selected and switching players led
     pos_led = led_layout[pos[0]][pos[1]]
     if pos_led not in clicked_leds:
-        if current_playing == player1:
+        if current_playing is player1:
             pos_led.write(1)
             time.sleep(0.2)
         elif current_playing == player2:
@@ -111,18 +97,9 @@ while True:
             time.sleep(0.1)
             pos_led.write(1)
             time.sleep(0.1)
-            pos_led.write(0)
-            time.sleep(0.1)
-            pos_led.write(1)
-            time.sleep(0.1)
-            pos_led.write(0)
-            time.sleep(0.1)
-            pos_led.write(1)
-            time.sleep(0.1)
-            pos_led.write(0)
-            time.sleep(0.1)
         else:
             pass
+
     # controls
     if move_state == 1:
         pos[1] += 1
