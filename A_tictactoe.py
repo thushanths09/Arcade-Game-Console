@@ -48,11 +48,7 @@ def switch_players():
         print(5)
 
 def win():
-    if (l1 and l5 and l6) in clicked_leds:
-        print("WIN")
-    elif (l3 and l5 and l7) in clicked_leds:
-        print("WIN")
-    elif (l1 and l2 and l3) in clicked_leds:
+    if (l1 and l2 and l3) in clicked_leds:
         print("WIN")
     elif (l4 and l5 and l6) in clicked_leds:
         print("WIN")
@@ -60,7 +56,11 @@ def win():
         print("WIN")
     elif (l1 and l4 and l7) in clicked_leds:
         print("WIN")
-    elif (l2 and l5 and l9) in clicked_leds:
+    elif (l2 and l5 and l8) in clicked_leds:
+        print("WIN")
+    elif (l1 and l5 and l9) in clicked_leds:
+        print("WIN")
+    elif (l3 and l5 and l7) in clicked_leds:
         print("WIN")
     elif (l3 and l6 and l9) in clicked_leds:
         print("WIN")
@@ -108,8 +108,9 @@ while True:
     # turn on the selected led
     if click_state == 1:
         clicked_led = led_layout[pos[0]][pos[1]]
-        clicked_led.write(0)
+        clicked_led.write(1)
         clicked_leds.append(clicked_led)
+        win()
         time.sleep(0.1)
     else:
         pass
