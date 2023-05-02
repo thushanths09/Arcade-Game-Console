@@ -6,12 +6,14 @@ from pyfirmata import *
 from pyfirmata import util
 import time
 
+
 # creating the board
 board = Arduino('COM9')
 
 # setting up the direction keys
 move = board.get_pin('d:11:i')
 click = board.get_pin('d:12:i')
+buzzer = board.get_pin('d:13:o')
 
 # setting up the led lights for playing
 l1 = board.get_pin('d:2:o')
@@ -35,7 +37,8 @@ led_layout = [
 # setting up position of led and creating the set of selcted leds
 pos = [0, 0]
 clicked_leds = []
-players = ['X', 'O']
+player1 = 'X'
+player2 = 'O'
 
 # creating iterator to read the button
 it = util.Iterator(board)
@@ -43,41 +46,41 @@ it.start()
 move.enable_reporting()
 click.enable_reporting()
 
+#number of turns and player
+current_playing = player1
+turn = 1
+
 def switch_players():
     if click.read() == 1:
         print(5)
 
 def win():
     if (l1 and l2 and l3) in clicked_leds:
-        print("WIN")
+        return True
     elif (l4 and l5 and l6) in clicked_leds:
-        print("WIN")
+        return True
     elif (l7 and l8 and l9) in clicked_leds:
-        print("WIN")
+        return True
     elif (l1 and l4 and l7) in clicked_leds:
-        print("WIN")
+        return True
     elif (l2 and l5 and l8) in clicked_leds:
-        print("WIN")
+        return True
     elif (l1 and l5 and l9) in clicked_leds:
-        print("WIN")
+        return True
     elif (l3 and l5 and l7) in clicked_leds:
-        print("WIN")
+        return True
     elif (l3 and l6 and l9) in clicked_leds:
-        print("WIN")
+        return True
+    else:
+        return False
 
 #function to blink led
 def blink_led(x):
     while True:
         x.write(0)
-        time.sleep(0.5)
+        time.sleep(0.2)
         x.write(1)
-        time.sleep(0.5)
-
-def draw():
-    return 7
-
-def loose():
-    return 8
+        time.sleep(0.2)
 
 #Main Loop for Game
 while True:
@@ -110,9 +113,21 @@ while True:
         clicked_led = led_layout[pos[0]][pos[1]]
         clicked_led.write(1)
         clicked_leds.append(clicked_led)
-        win()
+        turn +=1
         time.sleep(0.1)
     else:
         pass
-    time.sleep(0.1)
 
+    #check winner
+    if win():
+        print("Player Win")
+        buzzer.write(1)
+        time.sleep(1)
+        buzzer.write(0)
+        break
+
+    #draw(no winner)
+    if turn == 9:
+        print("DRAW")
+        break
+    time.sleep(0.1)
