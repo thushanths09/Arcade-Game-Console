@@ -101,14 +101,28 @@ while True:
     # turn on the position led if it is not selected and switching players led
     pos_led = led_layout[pos[0]][pos[1]]
     if pos_led not in clicked_leds:
-        #if current_playing == player1:
+        if current_playing == player1:
             pos_led.write(1)
-        #     time.sleep(0.1)
-        # elif current_playing == player2:
-        #     blink_led(pos_led)
-        # else:
-        #     pass
-
+            time.sleep(0.2)
+        elif current_playing == player2:
+            pos_led.write(1)
+            time.sleep(0.1)
+            pos_led.write(0)
+            time.sleep(0.1)
+            pos_led.write(1)
+            time.sleep(0.1)
+            pos_led.write(0)
+            time.sleep(0.1)
+            pos_led.write(1)
+            time.sleep(0.1)
+            pos_led.write(0)
+            time.sleep(0.1)
+            pos_led.write(1)
+            time.sleep(0.1)
+            pos_led.write(0)
+            time.sleep(0.1)
+        else:
+            pass
     # controls
     if move_state == 1:
         pos[1] += 1
