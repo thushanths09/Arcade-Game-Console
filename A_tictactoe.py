@@ -45,19 +45,19 @@ def loose():
 board = Arduino('COM9')
 
 # setting up the direction keys
-move = board.get_pin('d:12:i')
-click = board.get_pin('d:13:i')
+move = board.get_pin('d:11:i')
+click = board.get_pin('d:12:i')
 
 # setting up the led lights for playing
-l1 = board.get_pin('d:3:o')
-l2 = board.get_pin('d:4:o')
-l3 = board.get_pin('d:9:o')
+l1 = board.get_pin('d:2:o')
+l2 = board.get_pin('d:3:o')
+l3 = board.get_pin('d:4:o')
 l4 = board.get_pin('d:5:o')
 l5 = board.get_pin('d:6:o')
-l6 = board.get_pin('d:10:o')
-l7 = board.get_pin('d:7:o')
-l8 = board.get_pin('d:8:o')
-l9 = board.get_pin('d:11:o')
+l6 = board.get_pin('d:7:o')
+l7 = board.get_pin('d:8:o')
+l8 = board.get_pin('d:9:o')
+l9 = board.get_pin('d:10:o')
 
 # LED Layout
 led_lights = [l1, l2, l3, l4, l5, l6, l7, l8, l9]
@@ -74,10 +74,18 @@ clicked_leds = []
 # creating iterator to read the button
 it = util.Iterator(board)
 it.start()
-move.enable_reporting()
-click.enable_reporting()
 
+
+
+#Main Loop for Game
 while True:
+    # reading the button states
+    move.enable_reporting()
+    move_state = move.read()
+    # reset_state = reset.read()
+    click.enable_reporting()
+    click_state = click.read()
+
     # initially turning off the lights
     for led in led_lights:
         led.write(0)
@@ -87,12 +95,6 @@ while True:
     if pos_led not in clicked_leds:
         pos_led.write(1)
         time.sleep(0.1)
-
-    # reading the button states
-    move_state = move.read()
-    # reset_state = reset.read()
-    click_state = click.read()
-
 
     # controls
     if move_state == 1:
