@@ -126,7 +126,6 @@ while True:
             pass
         turn += 1
         time.sleep(0.1)
-
     else:
         pass
 
