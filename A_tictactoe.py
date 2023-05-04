@@ -6,6 +6,9 @@ from pyfirmata import *
 from pyfirmata import util
 import time
 
+#registering players
+player1 = str(input("Enter Player 1 name: "))
+player2 = str(input("Enter Player 2 name: "))
 # creating the board
 board = Arduino('COM9')
 
@@ -38,8 +41,7 @@ led_layout = [
 pos = [0, 0]
 clicked_led_1 = []
 clicked_led_2 = []
-player1 = 'X'
-player2 = 'O'
+clicked_leds = clicked_led_1 + clicked_led_2
 
 # creating iterator to read the button
 it = util.Iterator(board)
@@ -52,10 +54,10 @@ def win():
     win_matches=[[l1,l2,l3], [l4,l5,l6], [l7,l8,l9], [l1,l4,l7], [l2,l5,l8], [l3,l6,l9], [l1,l5,l9], [l3,l5,l7]]
     for i in win_matches:
         if i == clicked_led_1:
-            print("PLAYER 1 WIN")
+            print(f"{player1} WIN")
             return True
         elif i == clicked_led_2:
-            print("PLAYER 2 WIN")
+            print(f"{player2} WIN")
             return True
 
 #number of turns and current player
@@ -76,9 +78,19 @@ while True:
     for led in led_lights:
         led.write(0)
 
-    # turn on the position led if it is not selected and switching players led
+    #moving controls
+    if move_state == 1:
+        pos[1] += 1
+        if pos[1] > 2:
+            pos[1] = 0
+            pos[0] += 1
+            if pos[0] > 2:
+                pos[0] = 0
+        time.sleep(0.1)
+
+    # turn on the position led if it is not selected
     pos_led = led_layout[pos[0]][pos[1]]
-    if pos_led not in (clicked_led_1 or clicked_led_2):
+    if pos_led not in clicked_leds:
         if present_player == player1:
             pos_led.write(1)
             time.sleep(0.2)
@@ -91,16 +103,6 @@ while True:
             time.sleep(0.1)
         else:
             pass
-
-    #moving controls
-    if move_state == 1:
-        pos[1] += 1
-        if pos[1] > 2:
-            pos[1] = 0
-            pos[0] += 1
-            if pos[0] > 2:
-                pos[0] = 0
-        time.sleep(0.1)
 
     # turn on the selected led
     if click_state == 1:
@@ -147,9 +149,9 @@ while True:
     time.sleep(0.1)
 
 #quitting the game
-if quit.read() == 1:
+if quit.read() == 0:
     print("SCORE")
     print("-------")
-    print("Player 1 : ",player1_score)
-    print("Player 2 : ",player2_score)
+    print(f"{player1} : ",player1_score)
+    print(f"{player2} : ",player2_score)
     board.exit()
