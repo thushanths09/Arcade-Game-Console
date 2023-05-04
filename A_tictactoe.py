@@ -9,6 +9,7 @@ import time
 #registering players
 player1 = str(input("Enter Player 1 name: "))
 player2 = str(input("Enter Player 2 name: "))
+
 # creating the board
 board = Arduino('COM9')
 
@@ -90,7 +91,7 @@ while True:
 
     # turn on the position led if it is not selected
     pos_led = led_layout[pos[0]][pos[1]]
-    if pos_led not in clicked_leds:
+    if pos_led not in (clicked_leds):
         if present_player == player1:
             pos_led.write(1)
             time.sleep(0.2)
