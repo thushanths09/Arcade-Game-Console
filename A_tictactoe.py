@@ -6,14 +6,13 @@ from pyfirmata import *
 from pyfirmata import util
 import time
 
-#registering players
-player1 = str(input("Enter Player 1 name: "))
-player2 = str(input("Enter Player 2 name: "))
-
+#definig players
+player1 = 'X'
+player2 = 'O'
 # creating the board
 board = Arduino('COM9')
 
-# setting up the direction keys
+# setting up the buttons
 move = board.get_pin('d:11:i')
 click = board.get_pin('d:12:i')
 buzzer = board.get_pin('d:13:o')
@@ -43,6 +42,8 @@ pos = [0, 0]
 clicked_led_1 = []
 clicked_led_2 = []
 clicked_leds = clicked_led_1 + clicked_led_2
+last_click_state = False
+last_move_state = False
 
 # creating iterator to read the button
 it = util.Iterator(board)
@@ -55,10 +56,10 @@ def win():
     win_matches=[[l1,l2,l3], [l4,l5,l6], [l7,l8,l9], [l1,l4,l7], [l2,l5,l8], [l3,l6,l9], [l1,l5,l9], [l3,l5,l7]]
     for i in win_matches:
         if i == clicked_led_1:
-            print(f"{player1} WIN")
+            print("Player 1 wins")
             return True
         elif i == clicked_led_2:
-            print(f"{player2} WIN")
+            print("Player 2 wins")
             return True
 
 #number of turns and current player
@@ -68,6 +69,8 @@ turn = 1
 #initial score
 player1_score = 0
 player2_score = 0
+
+print('Welcome to the game')
 
 #Main Loop for Game
 while True:
@@ -80,14 +83,15 @@ while True:
         led.write(0)
 
     #moving controls
-    if move_state == 1:
+    if move_state and last_move_state != move_state:
+        print('move button pressed')
         pos[1] += 1
         if pos[1] > 2:
             pos[1] = 0
             pos[0] += 1
             if pos[0] > 2:
                 pos[0] = 0
-        time.sleep(0.1)
+        last_move_state = move_state
 
     # turn on the position led if it is not selected
     pos_led = led_layout[pos[0]][pos[1]]
@@ -106,7 +110,7 @@ while True:
             pass
 
     # turn on the selected led
-    if click_state == 1:
+    if click_state and last_click_state  != click_state:
         clicked_led = led_layout[pos[0]][pos[1]]
         #switching players
         if present_player == player1:
@@ -120,15 +124,12 @@ while True:
             time.sleep(0.2)
             clicked_led.write(0)
             time.sleep(0.2)
-            clicked_led.write(1)
-            time.sleep(0.2)
-            clicked_led.write(0)
-            time.sleep(0.2)
             present_player = player1
         else:
             pass
         turn += 1
         time.sleep(0.1)
+        last_click_state = click_state
     else:
         pass
 
@@ -151,8 +152,6 @@ while True:
 
 #quitting the game
 if quit.read() == 0:
-    print("SCORE")
-    print("-------")
-    print(f"{player1} : ",player1_score)
-    print(f"{player2} : ",player2_score)
+    print("Player 1:",player1_score)
+    print("Player 2:",player2_score)
     board.exit()
