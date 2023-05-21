@@ -130,8 +130,6 @@ while True:
         turn += 1
         time.sleep(0.1)
         last_click_state = click_state
-    else:
-        pass
 
     #check winner
     if win():
